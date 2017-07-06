@@ -11,6 +11,8 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
 
+    @text = @text.gsub(/[^a-z0-9\s]/i, "")
+    
     @word_count = @text.split.count
 
     @character_count_with_spaces = @text.length
