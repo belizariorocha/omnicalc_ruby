@@ -17,7 +17,9 @@ class CalculationsController < ApplicationController
 
     @character_count_without_spaces = @text.gsub(/\s+/, "").length
 
-    @occurrences = "Replace this string with your answer. Not anymore"
+    @special_word = @special_word.downcase
+    @occurrences = @text.downcase.split
+    @occurrences = @occurrences.count(@special_word)
 
     # ================================================================================
     # Your code goes above.
