@@ -40,7 +40,7 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+    @monthly_payment = @apr / 12 * @principal
 
     # ================================================================================
     # Your code goes above.
