@@ -11,16 +11,15 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
 
-    @text = @text.gsub(/[^a-z0-9\s]/i, "")
-    
     @word_count = @text.split.count
 
     @character_count_with_spaces = @text.length
 
     @character_count_without_spaces = @text.gsub(/\s+/, "").length
-
-    @special_word = @special_word.downcase
-    @occurrences = @text.downcase.split
+    
+    @text_aux = @text.gsub(/[^a-z0-9\s]/i, "")
+    
+    @occurrences = @text_aux.split
     @occurrences = @occurrences.count(@special_word)
 
     # ================================================================================
