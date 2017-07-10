@@ -17,10 +17,10 @@ class CalculationsController < ApplicationController
 
     @character_count_without_spaces = @text.gsub(/\s+/, "").length
     
-    @text_aux = @text.gsub(/[^a-z0-9\s]/i, "")
+    @text_aux = @text.gsub(/[^a-z0-9\s]/i, "").downcase
     
     @occurrences = @text_aux.split
-    @occurrences = @occurrences.count(@special_word)
+    @occurrences = @occurrences.count(@special_word.downcase)
     
     # https://github.com/appdevfall16/omnicalc/blob/master/spec/features/calculations_spec.rb#L101
 
@@ -43,7 +43,11 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = @apr / 12 * @principal
+    @r = @apr/(12*100) 
+    @N = @years*12
+    @P = @principal
+    
+    @monthly_payment = @r*@P/(1-(1+@r)**(-@N))
 
     # ================================================================================
     # Your code goes above.
@@ -65,12 +69,12 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = @ending - @starting
+    @minutes = (@seconds/60).round(5)
+    @hours = (@minutes/60).round(5)
+    @days = (@hours/24).round(5)
+    @weeks = (@days/7).round(5)
+    @years = (@weeks/52).round(5)
 
     # ================================================================================
     # Your code goes above.
