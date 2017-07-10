@@ -21,6 +21,8 @@ class CalculationsController < ApplicationController
     
     @occurrences = @text_aux.split
     @occurrences = @occurrences.count(@special_word)
+    
+    # https://github.com/appdevfall16/omnicalc/blob/master/spec/features/calculations_spec.rb#L101
 
     # ================================================================================
     # Your code goes above.
