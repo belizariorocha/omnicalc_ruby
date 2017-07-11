@@ -99,7 +99,7 @@ class CalculationsController < ApplicationController
 
     @maximum = @numbers.max
 
-    @range = "[ #{@minimum} , #{@maximum} ]"
+    @range = @maximum - @minimum
 
     if @count % 2 != 0 
       @median = @numbers[(@count + 1)/2]
