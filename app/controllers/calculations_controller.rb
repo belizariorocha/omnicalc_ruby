@@ -16,8 +16,13 @@ class CalculationsController < ApplicationController
     @character_count_with_spaces = @text.length
 
     @character_count_without_spaces = @text.gsub(/\s+/, "").length
-
-    @occurrences = "Replace this string with your answer."
+    
+    @text_aux = @text.gsub(/[^a-z0-9\s]/i, "").downcase
+    
+    @occurrences = @text_aux.split
+    @occurrences = @occurrences.count(@special_word.downcase)
+    
+    # https://github.com/appdevfall16/omnicalc/blob/master/spec/features/calculations_spec.rb#L101
 
     # ================================================================================
     # Your code goes above.
@@ -38,7 +43,11 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+    @r = @apr/(12*100) 
+    @N = @years*12
+    @P = @principal
+    
+    @monthly_payment = @r*@P/(1-(1+@r)**(-@N))
 
     # ================================================================================
     # Your code goes above.
@@ -60,12 +69,12 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = @ending - @starting
+    @minutes = (@seconds/60).round(5)
+    @hours = (@minutes/60).round(5)
+    @days = (@hours/24).round(5)
+    @weeks = (@days/7).round(5)
+    @years = (@weeks/52).round(5)
 
     # ================================================================================
     # Your code goes above.
@@ -82,27 +91,65 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    @range = @maximum - @minimum
 
-    @median = "Replace this string with your answer."
+    if @count % 2 != 0 
+      @median = @numbers[(@count + 1)/2]
+    else
+      @median = ( @numbers[@count/2] + @numbers[(@count + 2)/2]) /2 
+    end 
+    
+    @sum = @numbers.sum
 
-    @sum = "Replace this string with your answer."
+    @mean = (@sum/@count).round(3)
 
-    @mean = "Replace this string with your answer."
-
-    @variance = "Replace this string with your answer."
-
-    @standard_deviation = "Replace this string with your answer."
-
-    @mode = "Replace this string with your answer."
+    sqr_dif = []
+    
+    @numbers.each do |x|
+      
+      comp = (x - @mean)**2
+      
+      sqr_dif.push(comp) 
+      
+    end
+    
+    @variance = (sqr_dif.sum / @count).round(3)
+    
+    @standard_deviation = Math.sqrt(@variance).round(3)
+    
+    mode_array = []
+    
+    current_mode = @sorted_numbers.first
+    mode_array.push(current_mode)
+    
+    @sorted_numbers.each do |x|
+    
+      if @numbers.count(x) == @numbers.count(current_mode) && x != current_mode
+        current_mode = x
+        mode_array.push(x)
+      elsif @numbers.count(x) > @numbers.count(current_mode)
+        current_mode = x 
+        mode_array.clear
+        mode_array.push(x)
+      end
+    
+    end
+    
+    if mode_array.length == 1
+      @mode = mode_array.first
+    else
+      @mode = mode_array
+    end
+    
+    
 
     # ================================================================================
     # Your code goes above.
