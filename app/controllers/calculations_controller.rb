@@ -91,27 +91,65 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    @range = "[ #{@minimum} , #{@maximum} ]"
 
-    @median = "Replace this string with your answer."
+    if @count % 2 != 0 
+      @median = @numbers[(@count + 1)/2]
+    else
+      @median = ( @numbers[@count/2] + @numbers[(@count + 2)/2]) /2 
+    end 
+    
+    @sum = @numbers.sum
 
-    @sum = "Replace this string with your answer."
+    @mean = (@sum/@count).round(3)
 
-    @mean = "Replace this string with your answer."
-
-    @variance = "Replace this string with your answer."
-
-    @standard_deviation = "Replace this string with your answer."
-
-    @mode = "Replace this string with your answer."
+    sqr_dif = []
+    
+    @numbers.each do |x|
+      
+      comp = (x - @mean)**2
+      
+      sqr_dif.push(comp) 
+      
+    end
+    
+    @variance = (sqr_dif.sum / @count).round(3)
+    
+    @standard_deviation = Math.sqrt(@variance).round(3)
+    
+    mode_array = []
+    
+    current_mode = @sorted_numbers.first
+    mode_array.push(current_mode)
+    
+    @sorted_numbers.each do |x|
+    
+      if @numbers.count(x) == @numbers.count(current_mode) && x != current_mode
+        current_mode = x
+        mode_array.push(x)
+      elsif @numbers.count(x) > @numbers.count(current_mode)
+        current_mode = x 
+        mode_array.clear
+        mode_array.push(x)
+      end
+    
+    end
+    
+    if mode_array.length == 1
+      @mode = mode_array.first
+    else
+      @mode = mode_array
+    end
+    
+    
 
     # ================================================================================
     # Your code goes above.
